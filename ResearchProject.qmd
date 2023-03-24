@@ -1,0 +1,13 @@
+---
+title: "Untitled"
+format: pdf
+editor: visual
+---
+
+
+```{r}
+Data <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data")
+```
+
+
+
