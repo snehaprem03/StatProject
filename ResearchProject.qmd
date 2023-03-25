@@ -1,13 +1,51 @@
 ---
-title: "Untitled"
+title: "Stat 380 Project"
 format: pdf
 editor: visual
 ---
 
-
 ```{r}
-Data <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data")
+#loads packages
+packages <- c(
+    # Old packages
+    "ISLR2",
+    "dplyr",
+    "tidyr",
+    "readr",
+    "purrr",
+    "glmnet",
+    "caret",
+    "repr",
+    # NEW
+    "torch",
+    "mlbench"
+)
+
+# renv::install(packages)
+sapply(packages, require, character.only=TRUE)
 ```
 
+```{r}
+#reads the data in, doesn't work rn probably due to the header currently being changed
+Data <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data", header = T, na.rm = T)
 
+#eliminates country and community which we said was not useful since they had lots of ?
+Data <- Data %>%
+  dplyr::select(-Country, -Community)
+```
 
+```{r}
+data_model <- lm(X8 ~ ., data = Data)
+```
+
+```{r}
+plot(data_model)
+```
+
+```{r}
+plotModel(data_model)
+```
+
+```{r}
+
+```
