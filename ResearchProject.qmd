@@ -85,9 +85,33 @@ CrimeData %>% summarise_all(~ sum(is.na(.)))
 
 ```
 
+### 1.3 Visualizing the Remaining Data
+
+```{r}
+summary(CrimeData)
+```
+
+### Dealing with Variable Types
+
+```{r}
+# Fold and State is an int, so let's change that to num to keep everything consistent
+
+CrimeData <- CrimeData %>% mutate(across(c("state", "fold"), as.numeric))
+
+```
+
+```{r}
+# check types now
+
+str(CrimeData)
+```
+
 # Variable Creation, Selection, and Manipulation
 
 ```{r}
+
+# Initial Correlation Map to Visualize Initial Relationships
+
 
 ```
 
