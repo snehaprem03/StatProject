@@ -1,5 +1,5 @@
 ---
-title: "Evaluating Racial Bias Relating to Violent Crimes in U.S. Communities using a Predictive Machine Learning Model"
+title: "Eliminating Racial Bias Relating to Violent Crimes in U.S. Communities using a Predictive Machine Learning Model"
 author: "input our names here"
 format: pdf
 editor: visual
