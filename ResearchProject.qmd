@@ -24,7 +24,7 @@ CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject
 
 # 1. Data Tidying and Manipulation
 
-### 1.1 Understanding Our Variables
+### 1.1 Understanding Our Data
 
 ```{r}
 head(CrimeData) #first few rows
@@ -37,6 +37,14 @@ summary(CrimeData) #summary statistics + distribution of each variable
 
 ```{r}
 CrimeData %>% summarise_all(n_distinct) #number of unique values for each column of the data frame
+```
+
+### 1.2 Cleaning and Pre-Processing Data
+
+```{r}
+CrimeData %>% summarise_all(~ sum(is.na(.)))
+# We can see that country, community, LemasSwornFT, LemasSwFTPerPop, LemasSwFTFieldOps, LemasSwFTFieldPerPop, LemasTotalReq, LemasTotReqPerPop, PolicReqPerOffic, PolicPerPo, RacialMatchCom, PctPolicWhite, PctPolicBlack, PctPolicHisp, PctPolicAsian, PctPolicMinor, OfficAssgnDrugUnits, NumKindsDrugsSeiz, PolicAveOTWorked, PolicCars, PolicOperBudg, LemasPctPolicOnPatr, LemasGangUnitDeploy, PolicBudgPerPop all have missing values (1675 for almost all but 1174 for the first two)
+
 ```
 
 # Variable Creation, Selection, and Manipulation
