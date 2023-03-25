@@ -8,11 +8,43 @@ editor: visual
 # Reading Libraries and Dataset
 
 ```{r}
+# Add all applicable libraries
 library(tidyverse)
 
 
 Data <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data")
+```
 
+\-
 
+# Data Tidying and Manipulation
+
+```{r}
 
 ```
+
+\-
+
+# Variable Creation, Selection, and Manipulation
+
+```{r}
+
+```
+
+\-
+
+# Introductory Plots
+
+```{r}
+
+```
+
+\-
+
+# Exploratory Data Analysis
+
+```{r}
+
+```
+
+\-
