@@ -10,20 +10,27 @@ editor: visual
 ```{r}
 # Add all applicable libraries
 library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(corrplot)
 
-
-Data <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data")
+CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data")
 ```
 
 \-
 
-# Data Tidying and Manipulation
+# 1. Data Tidying and Manipulation
+
+### 1.1 Understanding Our Variables
 
 ```{r}
-
+glimpse(CrimeData)
 ```
 
-\-
+```{r}
+summary(Data)
+```
 
 # Variable Creation, Selection, and Manipulation
 
