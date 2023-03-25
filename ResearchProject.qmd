@@ -8,12 +8,26 @@ editor: visual
 # Reading Libraries and Dataset
 
 ```{r}
-# Add all applicable libraries
-library(tidyverse)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(corrplot)
+#loads packages
+packages <- c(
+    # Old packages
+   "tidyverse",
+    "ISLR2",
+    "dplyr",
+    "tidyr",
+    "readr",
+    "purrr",
+    "glmnet",
+    "caret",
+    "repr",
+    # NEW
+    "torch",
+    "mlbench",
+    "Stat2Data",
+    "ggformula",
+    "mosaic",
+    "car"
+)
 
 CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data", header = TRUE, na.strings = "?")
 
@@ -21,6 +35,18 @@ CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject
 ```
 
 \-
+
+# Introduction to our Data
+
+## **Research Question:** 
+
+\"Evaluating Racial Bias Relating to Violent Crimes in U.S. Communities using a Predictive Machine Learning Model.\"
+
+## **Why is this problem important?**
+
+This problem is important because we want to build a predictive model for the number of violent crimes within U.S. communities. There are many different policy decisions made based on various attributes like race, gender, police force per area, income per area in a community and with the number of violent crimes in the U.S. increasing we wanted to see which of these attributes contribute the most to a high-crime U.S community. 
+
+Most models often conclude that black communities have higher violent crime rates, however we want to eliminate this racial bias in our model and see if it is actually race that affects violent crimes or if it is more nuanced features such as a large police force, high unemployment, etc. This can be very important for policy decisions
 
 # 1. Data Tidying and Manipulation
 
@@ -119,8 +145,11 @@ str(CrimeData)
 
 # Introductory Plots
 
-```{r}
+As we can see in this graph comparing violent crimes with median income, there are many more violent crimes per 100k in the 0.00 to 0.50 range of median income. While the 0.50 to 1.00 range for median income has considerably less violent crimes. This relationship appears to be fairly strong, and median income may very likely be a very strong predictor in our data.
 
+```{r}
+#This creates a quick graph comparing violent crimes and median income
+gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
 ```
 
 \-
@@ -131,4 +160,16 @@ str(CrimeData)
 
 ```
 
+Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength. This may cause our R-squared value to decrease; however, this is necessary for the integrity of our results.
+
+```{r}
+
+#We will likely use the following code, once we make our model, to test for multicollinearity.
+#vif(model) %>% knitr::kable()
+```
+
 \-
+
+## What are your expected outcomes for the project? 
+
+Initially, we would want to be able to find the predictors from our dataset that impact the likelihood of violent crimes occurring, which will allow us to have a better understanding of the data, which will give us a stronger model when making predictions regarding violent crimes occurring. Other factors that may influence this can be variables such as race, gender, police force per area, income, etc. From all this, we would have a classification model built on feature selection and encoding algorithms (the number of violent crimes that occur).
