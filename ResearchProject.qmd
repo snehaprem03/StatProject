@@ -15,7 +15,9 @@ library(dplyr)
 library(tidyr)
 library(corrplot)
 
-CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data")
+CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data", header = TRUE, na.strings = "?")
+
+#This reads the csv file, addresses the first row as a header, and then changes all the "?" values to NA in order to make it easier to change later
 ```
 
 \-
@@ -25,11 +27,16 @@ CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject
 ### 1.1 Understanding Our Variables
 
 ```{r}
-glimpse(CrimeData)
+head(CrimeData) #first few rows
+str(CrimeData) # structure of the data set
 ```
 
 ```{r}
-summary(Data)
+summary(CrimeData) #summary statistics + distribution of each variable
+```
+
+```{r}
+CrimeData %>% summarise_all(n_distinct) #number of unique values for each column of the data frame
 ```
 
 # Variable Creation, Selection, and Manipulation
