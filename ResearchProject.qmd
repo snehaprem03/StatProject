@@ -5,6 +5,7 @@ format: pdf
 editor: visual
 ---
 
+<<<<<<< HEAD
 ```{r}
 #loads packages
 packages <- c(
@@ -50,3 +51,16 @@ plotModel(data_model)
 ```{r}
 
 ```
+=======
+# Reading Libraries and Dataset
+
+```{r}
+library(tidyverse)
+
+
+Data <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data")
+
+
+
+```
+>>>>>>> ea810f9c5705fa6f26d886febb9e7a20a1ff4208
