@@ -47,6 +47,44 @@ CrimeData %>% summarise_all(~ sum(is.na(.)))
 
 ```
 
+```{r}
+# The LEMAS data seems to have a lot of missing values. About 1675/1994 or 84% of the LEMAS columns have missing data. So, the best way to handle this is probably to drop those columns
+
+
+# Identify columns with more than 80% missing data
+na_percent <- apply(is.na(CrimeData), 2, mean)
+cols_to_drop <- names(na_percent[na_percent > 0.8])
+
+# List Dropped Columns
+cat("Dropped columns:", paste(cols_to_drop, collapse = ", "))
+
+# Drop the columns with more than 80% missing data
+CrimeData <- CrimeData[, !names(CrimeData) %in% cols_to_drop]
+
+
+
+```
+
+```{r}
+# Dropping the County and Community columns"
+
+CrimeData <- CrimeData[, !(names(CrimeData) %in% c("country", "community"))]
+
+```
+
+```{r}
+# OtherPerCap also has one missing row. We can use the mean of the column to replace this NA value since it is the only one
+
+mean_other_percap <- mean(CrimeData$OtherPerCap, na.rm = TRUE)
+CrimeData$OtherPerCap[is.na(CrimeData$OtherPerCap)] <- mean_other_percap
+```
+
+```{r}
+# Final Check for Any Missing Values
+CrimeData %>% summarise_all(~ sum(is.na(.)))
+
+```
+
 # Variable Creation, Selection, and Manipulation
 
 ```{r}
