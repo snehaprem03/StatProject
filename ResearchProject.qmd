@@ -121,9 +121,11 @@ CrimeData %>% summarise_all(~ sum(is.na(.)))
 
 # Introductory Plots
 
+As we can see in this graph comparing violent crimes with median income, there are many more violent crimes per 100k in the 0.00 to 0.50 range of median income. While the 0.50 to 1.00 range for median income has considerably less violent crimes. This relationship appears to be fairly strong, and median income may very likely be a very strong predictor in our data.
+
 ```{r}
 #This creates a quick graph comparing violent crimes and median income
-#gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
+gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
 ```
 
 \-
@@ -134,7 +136,7 @@ CrimeData %>% summarise_all(~ sum(is.na(.)))
 
 ```
 
-Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength.
+Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength. This may cause our R-squared value to decrease; however, this is necessary for the integrity of our results.
 
 ```{r}
 
