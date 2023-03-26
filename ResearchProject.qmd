@@ -9,6 +9,9 @@ editor: visual
 
 ```{r}
 #loads packages
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
 packages <- c(
     # Old packages
    "tidyverse",
@@ -70,6 +73,7 @@ CrimeData %>% summarise_all(n_distinct) #number of unique values for each column
 
 ```{r}
 CrimeData %>% summarise_all(~ sum(is.na(.)))
+
 # We can see that country, community, LemasSwornFT, LemasSwFTPerPop, LemasSwFTFieldOps, LemasSwFTFieldPerPop, LemasTotalReq, LemasTotReqPerPop, PolicReqPerOffic, PolicPerPo, RacialMatchCom, PctPolicWhite, PctPolicBlack, PctPolicHisp, PctPolicAsian, PctPolicMinor, OfficAssgnDrugUnits, NumKindsDrugsSeiz, PolicAveOTWorked, PolicCars, PolicOperBudg, LemasPctPolicOnPatr, LemasGangUnitDeploy, PolicBudgPerPop all have missing values (1675 for almost all but 1174 for the first two)
 
 ```
@@ -145,26 +149,37 @@ str(CrimeData)
 ```{r}
 library(moments)
 
-# Initial Correlation Map to Visualize Initial Relationships
-# This creates a correlation map with all the predictors, which is obviously too much. We will need to either combine predictors or only use select predictors for this to be readable.
-
-R <- CrimeData %>% 
-    keep(is.numeric) %>% 
-    cor()
-corrplot(R, type="upper", order="hclust")
 
 # Looking at the Skewness of the Variables
 skewness <- sapply(CrimeData, skewness)
 skewness
 ```
 
-Here we can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
-
 ```{r}
-# Addressing the Skewness of the Data
+# Visualizing the Distributions of Some of the Variables
+par(mfrow = c(2, 5))  # set up 7 rows and 5 columns of plots
+
+for (i in 1:10) {
+  hist(CrimeData[,i], main = names(CrimeData)[i], xlab = "")
+}
 ```
 
-# Introductory Plots
+### 2.3 Initial Correlation Map
+
+```{r}
+# Initial Correlation Map to Visualize Initial Relationships
+# This creates a correlation map with all the predictors, which is obviously too much. We will need to either combine predictors or only use select predictors for this to be readable.
+
+library(corrplot)
+# Compute the correlation matrix
+corr_matrix <- cor(CrimeData[3:8], use = "pairwise.complete.obs")
+
+# Plot the correlation matrix with color scale and significance levels
+corrplot(corr_matrix, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
+
+```
+
+# 3. Introductory Plots and Further EDA
 
 As we can see in this graph comparing violent crimes with median income, there are many more violent crimes per 100k in the 0.00 to 0.50 range of median income. While the 0.50 to 1.00 range for median income has considerably less violent crimes. This relationship appears to be fairly strong, and median income may very likely be a very strong predictor in our data.
 
@@ -172,10 +187,6 @@ As we can see in this graph comparing violent crimes with median income, there a
 #This creates a quick graph comparing violent crimes and median income
 gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
 ```
-
-\-
-
-# Exploratory Data Analysis
 
 ```{r}
 
@@ -189,7 +200,17 @@ Here we are testing for multicollinearity in our data. Any data that has a value
 #vif(model) %>% knitr::kable()
 ```
 
-\-
+Here we can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
+
+```{r}
+# Addressing the Skewness of the Data
+
+
+
+
+```
+
+### 
 
 ## What are your expected outcomes for the project?
 
