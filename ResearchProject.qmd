@@ -122,7 +122,9 @@ CrimeData %>% summarise_all(~ sum(is.na(.)))
 summary(CrimeData)
 ```
 
-### 1.4 Dealing with Variable Types
+# 2. Variable Creation, Selection, and Manipulation
+
+### 2.1 Dealing with Variable Types
 
 ```{r}
 # Fold and State is an int, so let's change that to num to keep everything consistent
@@ -142,9 +144,7 @@ CrimeData <- subset(CrimeData, select = -c(communityname))
 str(CrimeData)
 ```
 
-# 2. Variable Creation, Selection, and Manipulation
-
-### 2.1 Distribution of the Variables
+### 2.2 Distribution of the Variables
 
 ```{r}
 library(moments)
@@ -167,15 +167,25 @@ for (i in 1:10) {
 ### 2.3 Initial Correlation Map
 
 ```{r}
-# Initial Correlation Map to Visualize Initial Relationships
-# This creates a correlation map with all the predictors, which is obviously too much. We will need to either combine predictors or only use select predictors for this to be readable.
+# Initial Correlation Maps to Visualize Initial Relationships. Needed to create multiple to fit all the variables
 
 library(corrplot)
 # Compute the correlation matrix
-corr_matrix <- cor(CrimeData[3:8], use = "pairwise.complete.obs")
+corr_matrix1 <- cor(CrimeData[3:21], use = "pairwise.complete.obs")
+corr_matrix2 <- cor(CrimeData[22:40], use = "pairwise.complete.obs")
+corr_matrix3 <- cor(CrimeData[41:55], use = "pairwise.complete.obs")
+corr_matrix4 <- cor(CrimeData[56:70], use = "pairwise.complete.obs")
+corr_matrix5 <- cor(CrimeData[71:87], use = "pairwise.complete.obs")
+corr_matrix6 <- cor(CrimeData[88:103], use = "pairwise.complete.obs")
+
 
 # Plot the correlation matrix with color scale and significance levels
-corrplot(corr_matrix, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
+corrplot(corr_matrix1, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
+corrplot(corr_matrix2, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
+corrplot(corr_matrix3, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
+corrplot(corr_matrix4, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
+corrplot(corr_matrix5, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
+corrplot(corr_matrix6, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
 
 ```
 
