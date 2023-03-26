@@ -138,6 +138,7 @@ str(CrimeData)
 ```{r}
 
 # Initial Correlation Map to Visualize Initial Relationships
+# This creates a correlation map with all the predictors, which is obviously too much. We will need to either combine predictors or only use select predictors for this to be readable.
 
 R <- CrimeData %>% 
     keep(is.numeric) %>% 
