@@ -118,12 +118,17 @@ CrimeData %>% summarise_all(~ sum(is.na(.)))
 summary(CrimeData)
 ```
 
-### Dealing with Variable Types
+### 1.4 Dealing with Variable Types
 
 ```{r}
 # Fold and State is an int, so let's change that to num to keep everything consistent
 
 CrimeData <- CrimeData %>% mutate(across(c("state", "fold"), as.numeric))
+
+# communityname is also a string. We do not want this in our model as well as communityname can serve as a proxy variable for race
+
+CrimeData <- subset(CrimeData, select = -c(communityname))
+
 
 ```
 
@@ -133,9 +138,12 @@ CrimeData <- CrimeData %>% mutate(across(c("state", "fold"), as.numeric))
 str(CrimeData)
 ```
 
-# Variable Creation, Selection, and Manipulation
+# 2. Variable Creation, Selection, and Manipulation
+
+### 2.1 Distribution of the Variables
 
 ```{r}
+library(moments)
 
 # Initial Correlation Map to Visualize Initial Relationships
 # This creates a correlation map with all the predictors, which is obviously too much. We will need to either combine predictors or only use select predictors for this to be readable.
@@ -144,9 +152,17 @@ R <- CrimeData %>%
     keep(is.numeric) %>% 
     cor()
 corrplot(R, type="upper", order="hclust")
+
+# Looking at the Skewness of the Variables
+skewness <- sapply(CrimeData, skewness)
+skewness
 ```
 
-\-
+Here we can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
+
+```{r}
+# Addressing the Skewness of the Data
+```
 
 # Introductory Plots
 
