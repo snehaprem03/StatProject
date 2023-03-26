@@ -189,7 +189,8 @@ gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
 ```
 
 ```{r}
-
+full_model <- lm(ViolentCrimesPerPop ~ ., data = CrimeData)
+summary(full_model)
 ```
 
 Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength. This may cause our R-squared value to decrease; however, this is necessary for the integrity of our results.
