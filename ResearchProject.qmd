@@ -26,7 +26,8 @@ packages <- c(
     "Stat2Data",
     "ggformula",
     "mosaic",
-    "car"
+    "car",
+    "corrplot"
 )
 
 CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data", header = TRUE, na.strings = "?")
@@ -138,7 +139,10 @@ str(CrimeData)
 
 # Initial Correlation Map to Visualize Initial Relationships
 
-
+R <- CrimeData %>% 
+    keep(is.numeric) %>% 
+    cor()
+corrplot(R, type="upper", order="hclust")
 ```
 
 \-
