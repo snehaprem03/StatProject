@@ -12,6 +12,7 @@ editor: visual
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
+library(ggformula)
 packages <- c(
     # Old packages
    "tidyverse",
@@ -74,7 +75,7 @@ CrimeData %>% summarise_all(n_distinct) #number of unique values for each column
 ```{r}
 CrimeData %>% summarise_all(~ sum(is.na(.)))
 
-# We can see that country, community, LemasSwornFT, LemasSwFTPerPop, LemasSwFTFieldOps, LemasSwFTFieldPerPop, LemasTotalReq, LemasTotReqPerPop, PolicReqPerOffic, PolicPerPo, RacialMatchCom, PctPolicWhite, PctPolicBlack, PctPolicHisp, PctPolicAsian, PctPolicMinor, OfficAssgnDrugUnits, NumKindsDrugsSeiz, PolicAveOTWorked, PolicCars, PolicOperBudg, LemasPctPolicOnPatr, LemasGangUnitDeploy, PolicBudgPerPop all have missing values (1675 for almost all but 1174 for the first two)
+# We can see that country, community, LemasSwornFT, LemasSwFTPerPop, LemasSwFTFieldOps, LemasSwFTFieldPerPop, LemasTotalReq, LemasTotReqPerPop, PolicReqPerOffic, PolicPerPo, RacialMatchCom, PctPolicWhite, PctPolicBlack, PctPolicHisp, PctPolicAsian, PctPolicMinor, OfficAssgnDrugUnits, NumKindsDrugsSeiz, PolicAveOTWorked, PolicCars, PolicOperBudg, LemasPctPolicOnPatr, LemasGangUnitDeploy, PolicBudgPerPop all have missing values (1675 for almost all but 1174 and 1177 for the first two)
 
 ```
 
@@ -119,7 +120,9 @@ CrimeData %>% summarise_all(~ sum(is.na(.)))
 ### 1.3 Visualizing the Remaining Data
 
 ```{r}
-summary(CrimeData)
+my_summary <- summary(CrimeData)
+print(my_summary, digits = 2)
+
 ```
 
 # 2. Variable Creation, Selection, and Manipulation
@@ -189,6 +192,15 @@ corrplot(corr_matrix6, method = "color", type = "upper", order = "hclust", sig.l
 
 ```
 
+### 2.4 Principal Component Analysis
+
+```{r}
+pca <- prcomp(CrimeData, center = TRUE, scale. = TRUE)
+summary(pca)
+
+
+```
+
 # 3. Introductory Plots and Further EDA
 
 As we can see in this graph comparing violent crimes with median income, there are many more violent crimes per 100k in the 0.00 to 0.50 range of median income. While the 0.50 to 1.00 range for median income has considerably less violent crimes. This relationship appears to be fairly strong, and median income may very likely be a very strong predictor in our data.
@@ -202,6 +214,7 @@ gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
 full_model <- lm(ViolentCrimesPerPop ~ ., data = CrimeData)
 summary(full_model)
 ```
+
 ```{r}
 # We can also fit models with interaction effects of variables we believe may be related
 interaction_model1 <- lm(ViolentCrimesPerPop ~ racepctwhite + PctFam2Par + racepctwhite:PctFam2Par, data = CrimeData)
@@ -209,8 +222,6 @@ interaction_model2 <- lm(ViolentCrimesPerPop ~ racepcthisp + PctRecentImmig + ra
 summary(interaction_model1)
 summary(interaction_model2)
 ```
-
-
 
 Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength. This may cause our R-squared value to decrease; however, this is necessary for the integrity of our results.
 
