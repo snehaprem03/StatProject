@@ -251,17 +251,19 @@ model <- lm(ViolentCrimesPerPop ~ povertyrace*pctblack + educationagePct12t29 + 
 
 ### 4.1 Multicollinearity
 
-Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength. This may cause our R-squared value to decrease; however, this is necessary for the integrity of our results.
+Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity.
 
 ```{r}
 
 #We will likely use the following code, once we make our model, to test for multicollinearity.
-#vif(model) %>% knitr::kable()
+library(car)
+
+vif(full_model) %>% knitr::kable()
 ```
 
 ### 4.2 Addressing the Skewness of the Data
 
-Here we can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
+We can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
 
 ```{r}
 # Addressing the Skewness of the Data - Normalization
@@ -328,6 +330,9 @@ Plot +
 # 
 # # Identify the optimal lambda value
 # opt_lambda <- lasso_model$lambda.min
+
+
+
 # 
 # # Use the optimal lambda value to fit the final Lasso model
 # lasso_final_model <- glmnet(x_train, y_train, alpha = 1, standardize = TRUE, lambda = opt_lambda)
