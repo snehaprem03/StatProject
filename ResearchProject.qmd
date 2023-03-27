@@ -221,7 +221,9 @@ cor(CrimeData$ViolentCrimesPerPop, CrimeData$racepctasian)
 
 ```{r}
 #This creates a quick graph comparing violent crimes and median income
-gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
+gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData) +
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome))
+
 ```
 
 ```{r}
