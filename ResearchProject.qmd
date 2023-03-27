@@ -202,6 +202,15 @@ gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
 full_model <- lm(ViolentCrimesPerPop ~ ., data = CrimeData)
 summary(full_model)
 ```
+```{r}
+# We can also fit models with interaction effects of variables we believe may be related
+interaction_model1 <- lm(ViolentCrimesPerPop ~ racepctwhite + PctFam2Par + racepctwhite:PctFam2Par, data = CrimeData)
+interaction_model2 <- lm(ViolentCrimesPerPop ~ racepcthisp + PctRecentImmig + racepcthisp:PctRecentImmig, data = CrimeData)
+summary(interaction_model1)
+summary(interaction_model2)
+```
+
+
 
 Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength. This may cause our R-squared value to decrease; however, this is necessary for the integrity of our results.
 
