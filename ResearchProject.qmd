@@ -225,8 +225,14 @@ gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData)
 ```
 
 ```{r}
+#Initial Multiple Regression Results before Feature Selection
+
 full_model <- lm(ViolentCrimesPerPop ~ ., data = CrimeData)
 summary(full_model)
+summary(full_model)$coefficient
+
+
+# The p-value for the F statistic is < 2.2e-16 which is highly significant so at least one of the predictor variables is relevant to predicting ViolentCrimes.
 ```
 
 ```{r}
