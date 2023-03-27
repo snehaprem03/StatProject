@@ -243,6 +243,14 @@ summary(interaction_model1)
 summary(interaction_model2)
 ```
 
+```{r}
+model <- lm(ViolentCrimesPerPop ~ povertyrace*pctblack + educationagePct12t29 + policeexpend*PctPopDensity, data = CrimeData)
+```
+
+# 4. Model Pre-Processing
+
+### 4.1 Multicollinearity
+
 Here we are testing for multicollinearity in our data. Any data that has a value greater than 5 creates the risk of multicollinearity. To avoid this, we will need to remove columns that are very similar in their predictive strength. This may cause our R-squared value to decrease; however, this is necessary for the integrity of our results.
 
 ```{r}
@@ -250,6 +258,8 @@ Here we are testing for multicollinearity in our data. Any data that has a value
 #We will likely use the following code, once we make our model, to test for multicollinearity.
 #vif(model) %>% knitr::kable()
 ```
+
+### 4.2 Addressing the Skewness of the Data
 
 Here we can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
 
@@ -260,6 +270,8 @@ Here we can see that many of our variables are skewed to various degrees. We wan
 
 
 ```
+
+### 4.2 Further Visualizations
 
 We can also use ggplot to visually compare violent crime percentage with some key variables. We want to see what some of these relationships are before building our model.
 
@@ -289,6 +301,12 @@ Plot +
   geom_smooth(aes(x = PctUnemployed, y = ViolentCrimesPerPop))
 
 ```
+
+# Model Building
+
+### 5.1 Building a Model Including the Race Predictors
+
+### 5.2 Eliminating the Race Variables
 
 ```{r}
 # Using Lasso as a Feature Selection Technique
