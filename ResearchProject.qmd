@@ -352,4 +352,4 @@ Plot +
 
 ## What are your expected outcomes for the project?
 
-Initially, we would want to be able to find the predictors from our dataset that impact the likelihood of violent crimes occurring, which will allow us to have a better understanding of the data, which will give us a stronger model when making predictions regarding violent crimes occurring. Other factors that may influence this can be variables such as race, gender, police force per area, income, etc. From all this, we would have a classification model built on feature selection and encoding algorithms (the number of violent crimes that occur).
+Initially, we would want to be able to find the predictors from our dataset that impact the likelihood of violent crimes occurring, which will allow us to have a better understanding of the data, which will give us a stronger model when making predictions regarding violent crimes occurring. Other factors that may influence this can be variables such as race, gender, police force per area, income, etc. From all this, we would have a regression model built on feature selection and encoding algorithms (the number of violent crimes that occur).
