@@ -243,10 +243,6 @@ summary(interaction_model1)
 summary(interaction_model2)
 ```
 
-```{r}
-model <- lm(ViolentCrimesPerPop ~ povertyrace*pctblack + educationagePct12t29 + policeexpend*PctPopDensity, data = CrimeData)
-```
-
 # 4. Model Pre-Processing
 
 ### 4.1 Multicollinearity
