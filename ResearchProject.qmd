@@ -192,18 +192,32 @@ corrplot(corr_matrix6, method = "color", type = "upper", order = "hclust", sig.l
 
 ```
 
-### 2.4 Principal Component Analysis
-
-```{r}
-pca <- prcomp(CrimeData, center = TRUE, scale. = TRUE)
-summary(pca)
-
-
-```
-
 # 3. Introductory Plots and Further EDA
 
 As we can see in this graph comparing violent crimes with median income, there are many more violent crimes per 100k in the 0.00 to 0.50 range of median income. While the 0.50 to 1.00 range for median income has considerably less violent crimes. This relationship appears to be fairly strong, and median income may very likely be a very strong predictor in our data.
+
+```{r}
+#This creates a quick graph comparing violent crimes and race
+ggplot(CrimeData, aes(x = racepctblack, y = ViolentCrimesPerPop)) +
+  geom_point(aes(color = "Black")) +
+  geom_point(aes(x = racepctwhite, y = ViolentCrimesPerPop, color = "White")) +
+  geom_point(aes(x = racepctasian, y = ViolentCrimesPerPop, color = "Asian")) +
+  geom_point(aes(x = racepcthisp, y = ViolentCrimesPerPop, color = "Hispanic")) +
+  xlab("Race Percentage") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Race and Violent Crime") +
+  theme_bw() +
+  scale_color_manual(name = "Race", values = c("Black" = "black", "White" = "grey", "Asian" = "red", "Hispanic" = "green"))
+```
+
+```{r}
+# Correlation Coefficients
+cor(CrimeData$ViolentCrimesPerPop, CrimeData$racepctblack)
+cor(CrimeData$ViolentCrimesPerPop, CrimeData$racepcthisp)
+cor(CrimeData$ViolentCrimesPerPop, CrimeData$racepctwhite)
+cor(CrimeData$ViolentCrimesPerPop, CrimeData$racepctasian)
+
+```
 
 ```{r}
 #This creates a quick graph comparing violent crimes and median income
