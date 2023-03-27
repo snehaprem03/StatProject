@@ -44,13 +44,13 @@ CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject
 
 ## **Research Question:**
 
-"Evaluating Racial Bias Relating to Violent Crimes in U.S. Communities using a Predictive Machine Learning Model."
+"Evaluating Racial Bias Relating to Violent Crimes in U.S. Communities Using a Predictive Machine Learning Model."
 
 ## **Why is this problem important?**
 
 This problem is important because we want to build a predictive model for the number of violent crimes within U.S. communities. There are many different policy decisions made based on various attributes like race, gender, police force per area, income per area in a community and with the number of violent crimes in the U.S. increasing we wanted to see which of these attributes contribute the most to a high-crime U.S community. 
 
-Most models often conclude that black communities have higher violent crime rates, however we want to eliminate this racial bias in our model and see if it is actually race that affects violent crimes or if it is more nuanced features such as a large police force, high unemployment, etc. This can be very important for policy decisions
+Most models often conclude that black communities have higher violent crime rates, however we want to eliminate this racial bias in our model and see if it is actually race that affects violent crimes or if it is more nuanced features such as a large police force, high unemployment, etc. It is possible that race is confounding with some other variables when it comes to predicting violent crimes. This can be very important for policy decisions.
 
 # 1. Data Tidying and Manipulation
 
@@ -218,6 +218,35 @@ Here we can see that many of our variables are skewed to various degrees. We wan
 
 
 
+
+```
+
+We can also use ggplot to visually compare violent crime percentage with some key variables. We want to see what some of these relationships are before building our model.
+
+```{r}
+# These ggplots will display scatterplots of different variables vs violent crime and show a line that attempts to fit the data
+Plot <- ggplot(CrimeData)
+Plot + 
+  geom_point(aes(x = PctFam2Par, y = ViolentCrimesPerPop)) +
+  geom_smooth(aes(x = PctFam2Par, y = ViolentCrimesPerPop))
+Plot + 
+  geom_point(aes(x = racepctblack, y = ViolentCrimesPerPop)) +
+  geom_smooth(aes(x = racepctblack, y = ViolentCrimesPerPop))
+Plot + 
+  geom_point(aes(x = racepctwhite, y = ViolentCrimesPerPop)) +
+  geom_smooth(aes(x = racepctwhite, y = ViolentCrimesPerPop))
+Plot + 
+  geom_point(aes(x = racepctasian, y = ViolentCrimesPerPop)) +
+  geom_smooth(aes(x = racepctasian, y = ViolentCrimesPerPop))
+Plot + 
+  geom_point(aes(x = racepcthisp, y = ViolentCrimesPerPop)) +
+  geom_smooth(aes(x = racepcthisp, y = ViolentCrimesPerPop))
+Plot + 
+  geom_point(aes(x = PctNotHSGrad, y = ViolentCrimesPerPop)) +
+  geom_smooth(aes(x = PctNotHSGrad, y = ViolentCrimesPerPop))
+Plot + 
+  geom_point(aes(x = PctUnemployed, y = ViolentCrimesPerPop)) +
+  geom_smooth(aes(x = PctUnemployed, y = ViolentCrimesPerPop))
 
 ```
 
