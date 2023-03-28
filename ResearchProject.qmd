@@ -227,6 +227,13 @@ gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData) +
 ```
 
 ```{r}
+#This creates a quick graph comparing violent crimes and if the area is urban
+gf_point(ViolentCrimesPerPop ~ PctEmploy, data = CrimeData) +
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome))
+```
+
+
+```{r}
 #Initial Multiple Regression Results before Feature Selection
 
 full_model <- lm(ViolentCrimesPerPop ~ ., data = CrimeData)
