@@ -7,32 +7,33 @@ editor: visual
 
 # Reading Libraries and Dataset
 
-```{r}
+```{R, message=FALSE, warning=FALSE, results='hide'}
 #loads packages
-library(dplyr)
-library(ggplot2)
-library(tidyverse)
-library(ggformula)
 packages <- c(
-    # Old packages
-   "tidyverse",
-    "ISLR2",
-    "dplyr",
-    "tidyr",
-    "readr",
-    "purrr",
-    "glmnet",
-    "caret",
-    "repr",
-    # NEW
-    "torch",
-    "mlbench",
+  "dplyr", 
+  "readr", 
+  "tidyr", 
+  "purrr", 
+  "broom",
+  "magrittr",
+  "corrplot",
+  "caret",
+  "rpart",
+  "rpart.plot",
+  "e1071",
+  "torch", 
+  "luz",
+  "mlbench",
     "Stat2Data",
     "ggformula",
     "mosaic",
     "car",
     "corrplot"
 )
+
+# renv::install(packages)
+sapply(packages, require, character.only=T)
+
 
 CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data", header = TRUE, na.strings = "?")
 
@@ -265,18 +266,6 @@ library(car)
 vif(full_model) %>% knitr::kable()
 ```
 
-### 4.2 Addressing the Skewness of the Data
-
-We can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
-
-```{r}
-# Addressing the Skewness of the Data - Normalization
-
-
-
-
-```
-
 ### 4.2 Further Visualizations
 
 We can also use ggplot to visually compare violent crime percentage with some key variables. We want to see what some of these relationships are before building our model.
@@ -310,9 +299,20 @@ Plot +
 
 # Model Building
 
-### 5.1 Building a Model Including the Race Predictors
+### 5.1 Using Logistic Regression on Our Data
 
-### 5.2 Eliminating the Race Variables
+```{R}
+#
+```
+
+```{R}
+
+```
+
+```{logisticmodel <- glm(ViolentCrimesPerPop ~ ., data = CrimeData, family=binomial())}
+```
+
+### 5.2 Addressing Multicollinearity
 
 #### Using Lasso
 
@@ -363,9 +363,18 @@ pca <- prcomp(CrimeData, center = TRUE, scale. = TRUE)
 summary(pca)
 ```
 
+```{R}
+screeplot(pca, type="l", npcs=50)
+```
+
 ```{r}
 pca_scores <- as.data.frame(pca$x)
 pca_scores
+```
+
+```{R}
+pca <- princomp(CrimeData %>% select(-ViolentCrimesPerPop), cor=TRUE)
+screeplot(pca)
 ```
 
 ```{r}
