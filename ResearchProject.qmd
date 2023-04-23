@@ -232,7 +232,6 @@ gf_point(ViolentCrimesPerPop ~ PctEmploy, data = CrimeData) +
     geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome))
 ```
 
-
 ```{r}
 #Initial Multiple Regression Results before Feature Selection
 
@@ -315,6 +314,8 @@ Plot +
 
 ### 5.2 Eliminating the Race Variables
 
+#### Using Lasso
+
 ```{r}
 # Using Lasso as a Feature Selection Technique
 
@@ -355,6 +356,31 @@ Plot +
 # relevant_vars <- train_data[, c(non_zero_coef, ncol(train_data))]
 ```
 
-## What are your expected outcomes for the project?
+#### Using PCA
 
-Initially, we would want to be able to find the predictors from our dataset that impact the likelihood of violent crimes occurring, which will allow us to have a better understanding of the data, which will give us a stronger model when making predictions regarding violent crimes occurring. Other factors that may influence this can be variables such as race, gender, police force per area, income, etc. From all this, we would have a regression model built on feature selection and encoding algorithms (the number of violent crimes that occur).
+```{r}
+pca <- prcomp(CrimeData, center = TRUE, scale. = TRUE)
+summary(pca)
+```
+
+```{r}
+pca_scores <- as.data.frame(pca$x)
+pca_scores
+```
+
+```{r}
+pca_scores$ViolentCrimesPerPop <- CrimeData$ViolentCrimesPerPop
+
+```
+
+```{r}
+fit <- lm(pca_scores$ViolentCrimesPerPop ~ ., data = pca_scores[, 1:25])
+summary(fit)
+
+```
+
+### Checking Multicollinearity
+
+```{r}
+vif(fit) %>% knitr::kable()
+```
