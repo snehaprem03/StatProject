@@ -302,14 +302,13 @@ Plot +
 ### 5.1 Using Logistic Regression on Our Data
 
 ```{R}
-#
+
+CrimeData_scaled <- as.data.frame(lapply(CrimeData, function(x) x*100))
+poissonmodel <- glm(ViolentCrimesPerPop ~ ., data = CrimeData_scaled, family=poisson())
 ```
 
 ```{R}
-
-```
-
-```{logisticmodel <- glm(ViolentCrimesPerPop ~ ., data = CrimeData, family=binomial())}
+summary(poissonmodel)
 ```
 
 ### 5.2 Addressing Multicollinearity
