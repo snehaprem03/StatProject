@@ -299,10 +299,13 @@ Plot +
 
 # Model Building
 
-### 5.1 Using Logistic Regression on Our Data
+### 5.1 Using Poisson Regression on Our Data
 
 ```{R}
+# We needed to use poisson regression on our data in order to make sure that the values made sense when we ran our regression. Since our data is non-integers, we scaled our data by multiplying it by 100 before we ran the model.
+```
 
+```{R}
 CrimeData_scaled <- as.data.frame(lapply(CrimeData, function(x) x*100))
 poissonmodel <- glm(ViolentCrimesPerPop ~ ., data = CrimeData_scaled, family=poisson())
 ```
@@ -312,48 +315,6 @@ summary(poissonmodel)
 ```
 
 ### 5.2 Addressing Multicollinearity
-
-#### Using Lasso
-
-```{r}
-# Using Lasso as a Feature Selection Technique
-
-# set.seed(123)
-# train_index <- sample(nrow(CrimeData), 0.7 * nrow(CrimeData))
-# train_data <- crime_data[train_index, ]
-# test_data <- crime_data[-train_index, ]
-# 
-# # Convert the data to matrix format
-# x_train <- as.matrix(train_data[, -ncol(train_data)])
-# y_train <- train_data[, ncol(train_data)]
-# 
-# # Fit a Lasso regression model using cross-validation to select the lambda value
-# lasso_model <- cv.glmnet(x_train, y_train, alpha = 1, standardize = TRUE, nfolds = 10)
-# 
-# # Plot the Lasso coefficients
-# plot(lasso_model)
-# 
-# # Identify the optimal lambda value
-# opt_lambda <- lasso_model$lambda.min
-
-
-
-# 
-# # Use the optimal lambda value to fit the final Lasso model
-# lasso_final_model <- glmnet(x_train, y_train, alpha = 1, standardize = TRUE, lambda = opt_lambda)
-# 
-# # Extract the coefficients from the final model
-# lasso_coef <- coef(lasso_final_model)
-# 
-# # Remove the intercept term
-# lasso_coef <- lasso_coef[-1,]
-# 
-# # Identify the non-zero coefficients
-# non_zero_coef <- which(lasso_coef != 0)
-# 
-# # Select the relevant variables from the dataset
-# relevant_vars <- train_data[, c(non_zero_coef, ncol(train_data))]
-```
 
 #### Using PCA
 
@@ -397,3 +358,7 @@ PC1:
 ```{r}
 vif(fit_pca) %>% knitr::kable()
 ```
+
+# Conclusion
+
+Conclusion....
