@@ -295,24 +295,9 @@ Plot +
 
 ```
 
-# Model Building
 
-### 5.1 Using Poisson Regression on Our Data
 
-```{R}
-# We needed to use poisson regression on our data in order to make sure that the values made sense when we ran our regression. Since our data is non-integers, we scaled our data by multiplying it by 100 before we ran the model.
-```
-
-```{R}
-# CrimeData_scaled <- as.data.frame(lapply(CrimeData, function(x) x*100))
-# poissonmodel <- glm(ViolentCrimesPerPop ~ ., data = CrimeData_scaled, family=poisson())
-```
-
-```{R}
-#summary(poissonmodel)
-```
-
-### 5.2 Addressing Multicollinearity
+### 5.1 Addressing Multicollinearity
 
 #### Using PCA
 
