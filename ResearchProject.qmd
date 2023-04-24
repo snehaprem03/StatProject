@@ -319,12 +319,9 @@ summary(poissonmodel)
 #### Using PCA
 
 ```{r}
-<<<<<<< HEAD
 #Obtain initial principal components using prcomp()
 pca <- prcomp(CrimeData, center = TRUE, scale. = TRUE)
-=======
 pca <- prcomp(CrimeData_scaled, center = TRUE, scale. = TRUE)
->>>>>>> f029fdcceebf3b94468faf407d7e2810dce764ab
 summary(pca)
 ```
 
@@ -339,12 +336,9 @@ pca_scores
 ```
 
 ```{R}
-<<<<<<< HEAD
 #Create screeplot to observe trend in principal component variances
 pca <- princomp(CrimeData %>% select(-ViolentCrimesPerPop), cor=TRUE)
-=======
 pca <- princomp(CrimeData_scaled %>% select(-ViolentCrimesPerPop), cor=TRUE)
->>>>>>> f029fdcceebf3b94468faf407d7e2810dce764ab
 screeplot(pca)
 ```
 
@@ -354,20 +348,18 @@ pca_scores$ViolentCrimesPerPop <- CrimeData_scaled$ViolentCrimesPerPop
 ```
 
 ```{r}
-<<<<<<< HEAD
 #Summarize to find coefficients of each principal components
 fit <- lm(pca_scores$ViolentCrimesPerPop ~ ., data = pca_scores[, 1:25])
 summary(fit)
 
 ```
-The intercept of this data represents what the violent crime percentage would be if all principal components were 0.
-Each principal component coefficient 1-25 represent how much the violent crime percentage would increase/decrease if the elements of that component increase by an average of one. For example, if there were three elements in component 1 and they all increased by one unit, the violent crime percentage would be expected to increase by 0.0297592.
+
+
 ### Checking Multicollinearity
 
 ```{r}
 #Multicollinearity analysis
 vif(fit) %>% knitr::kable()
-=======
 fit_pca <- lm(pca_scores$ViolentCrimesPerPop ~ ., data = pca_scores[, 1:25])
 summary(fit_pca)
 
@@ -381,7 +373,6 @@ PC1:
 
 ```{r}
 vif(fit_pca) %>% knitr::kable()
->>>>>>> f029fdcceebf3b94468faf407d7e2810dce764ab
 ```
 
 # Conclusion
