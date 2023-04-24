@@ -306,22 +306,23 @@ Plot +
 ```
 
 ```{R}
-CrimeData_scaled <- as.data.frame(lapply(CrimeData, function(x) x*100))
-poissonmodel <- glm(ViolentCrimesPerPop ~ ., data = CrimeData_scaled, family=poisson())
+# CrimeData_scaled <- as.data.frame(lapply(CrimeData, function(x) x*100))
+# poissonmodel <- glm(ViolentCrimesPerPop ~ ., data = CrimeData_scaled, family=poisson())
 ```
 
 ```{R}
-summary(poissonmodel)
+#summary(poissonmodel)
 ```
 
 ### 5.2 Addressing Multicollinearity
 
 #### Using PCA
 
+
 ```{r}
 #Obtain initial principal components using prcomp()
-pca <- prcomp(CrimeData, center = TRUE, scale. = TRUE)
-pca <- prcomp(CrimeData_scaled, center = TRUE, scale. = TRUE)
+pca <- prcomp(CrimeData %>% select(-ViolentCrimesPerPop), center = TRUE, scale. = TRUE, retx = TRUE)
+
 summary(pca)
 ```
 
@@ -329,6 +330,29 @@ summary(pca)
 screeplot(pca, type="l", npcs=50)
 # Here we can see that the first 25 principal components explain ~90% of the variance
 ```
+### Interpreting the PCA Coefficients
+`
+```{R}
+# Check the class of your PCA object
+class(data.pca)
+
+# Check the attributes of your PCA object
+attributes(data.pca)
+```
+
+
+```{R}
+pca_loadings <- loadings(pca)
+pca_loadings_subset <- pca_loadings[, 1:24]
+pca_loadings_subset
+```
+
+
+## Interpretations
+
+PC1:
+
+
 
 ```{r}
 pca_scores <- as.data.frame(pca$x)
@@ -337,19 +361,18 @@ pca_scores
 
 ```{R}
 #Create screeplot to observe trend in principal component variances
-pca <- princomp(CrimeData %>% select(-ViolentCrimesPerPop), cor=TRUE)
 pca <- princomp(CrimeData_scaled %>% select(-ViolentCrimesPerPop), cor=TRUE)
 screeplot(pca)
 ```
 
 ```{r}
-pca_scores$ViolentCrimesPerPop <- CrimeData_scaled$ViolentCrimesPerPop
+pca_scores$ViolentCrimesPerPop <- CrimeData$ViolentCrimesPerPop
 
 ```
 
 ```{r}
 #Summarize to find coefficients of each principal components
-fit <- lm(pca_scores$ViolentCrimesPerPop ~ ., data = pca_scores[, 1:25])
+fit <- lm(ViolentCrimesPerPop ~ ., data = pca_scores[, c(1:24, ncol(pca_scores))])
 summary(fit)
 
 ```
@@ -360,20 +383,12 @@ summary(fit)
 ```{r}
 #Multicollinearity analysis
 vif(fit) %>% knitr::kable()
-fit_pca <- lm(pca_scores$ViolentCrimesPerPop ~ ., data = pca_scores[, 1:25])
-summary(fit_pca)
+
 
 ```
 
-### Interpreting the PCA Coefficients
 
-PC1:
 
-### Checking Multicollinearity Now
-
-```{r}
-vif(fit_pca) %>% knitr::kable()
-```
 
 # Conclusion
 
