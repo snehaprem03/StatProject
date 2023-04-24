@@ -99,9 +99,9 @@ CrimeData <- CrimeData[, !names(CrimeData) %in% cols_to_drop]
 ```
 
 ```{r}
-# Dropping the County and Community columns"
+# Dropping the County and Community columns and State and Fold"
 
-CrimeData <- CrimeData[, !(names(CrimeData) %in% c("country", "community"))]
+CrimeData <- CrimeData[, !(names(CrimeData) %in% c("country", "community", "state", "fold"))]
 
 ```
 
@@ -131,9 +131,7 @@ print(my_summary, digits = 2)
 ### 2.1 Dealing with Variable Types
 
 ```{r}
-# Fold and State is an int, so let's change that to num to keep everything consistent
 
-CrimeData <- CrimeData %>% mutate(across(c("state", "fold"), as.numeric))
 
 # communityname is also a string. We do not want this in our model as well as communityname can serve as a proxy variable for race
 
@@ -180,7 +178,7 @@ corr_matrix2 <- cor(CrimeData[22:40], use = "pairwise.complete.obs")
 corr_matrix3 <- cor(CrimeData[41:55], use = "pairwise.complete.obs")
 corr_matrix4 <- cor(CrimeData[56:70], use = "pairwise.complete.obs")
 corr_matrix5 <- cor(CrimeData[71:87], use = "pairwise.complete.obs")
-corr_matrix6 <- cor(CrimeData[88:103], use = "pairwise.complete.obs")
+corr_matrix6 <- cor(CrimeData[88:101], use = "pairwise.complete.obs")
 
 
 # Plot the correlation matrix with color scale and significance levels
@@ -331,27 +329,6 @@ screeplot(pca, type="l", npcs=25)
 # Here we can see that the first 25 principal components explain ~90% of the variance
 ```
 ### Interpreting the PCA Coefficients
-`
-```{R}
-# Check the class of your PCA object
-class(data.pca)
-
-# Check the attributes of your PCA object
-attributes(data.pca)
-```
-
-
-```{R}
-pca_loadings <- loadings(pca)
-pca_loadings_subset <- pca_loadings[, 1:12]
-pca_loadings_subset
-```
-
-
-## Interpretations
-
-PC1:
-
 
 
 ```{r}
@@ -361,7 +338,7 @@ pca_scores
 
 ```{R}
 #Create screeplot to observe trend in principal component variances
-pca <- princomp(CrimeData_scaled %>% select(-ViolentCrimesPerPop), cor=TRUE)
+pca <- princomp(CrimeData %>% select(-ViolentCrimesPerPop), cor=TRUE)
 screeplot(pca)
 ```
 
@@ -369,6 +346,95 @@ screeplot(pca)
 pca_scores$ViolentCrimesPerPop <- CrimeData$ViolentCrimesPerPop
 
 ```
+
+```{R}
+# We decided to use the first 12 PC's which explain about 81% of the total variance
+pca_loadings <- loadings(pca)
+
+pca_loadings_subset <- pca_loadings[, 1:12]
+pca_loadings_subset
+```
+
+
+## Interpretations
+
+PC1: The first principal component represents income inequality
+
+- Highest Loadings: racepctblack (0.1067), pctWPubAsst (0.164013), PctPopUnderPov (0.173), PctLess9thGrade      (0.1452), PctNotHSGrad (0.1613), PctUnemployed
+
+- Lowest Loadings: medIncome, pctWInvInc, medFamInc, RentLowQ, PctFam2Par
+
+
+PC2: The second principal component represents 
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+
+
+PC3:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC4:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC5:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC6:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+
+PC7:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC8:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC9:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC10:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC11:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+PC12:
+
+- Highest Loadings:
+
+- Lowest Loadings: 
+
+
 
 ```{r}
 #Summarize to find coefficients of each principal components
