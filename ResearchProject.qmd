@@ -358,7 +358,7 @@ summary(poissonmodel)
 #### Using PCA
 
 ```{r}
-pca <- prcomp(CrimeData, center = TRUE, scale. = TRUE)
+pca <- prcomp(CrimeData_scaled, center = TRUE, scale. = TRUE)
 summary(pca)
 ```
 
@@ -373,18 +373,18 @@ pca_scores
 ```
 
 ```{R}
-pca <- princomp(CrimeData %>% select(-ViolentCrimesPerPop), cor=TRUE)
+pca <- princomp(CrimeData_scaled %>% select(-ViolentCrimesPerPop), cor=TRUE)
 screeplot(pca)
 ```
 
 ```{r}
-pca_scores$ViolentCrimesPerPop <- CrimeData$ViolentCrimesPerPop
+pca_scores$ViolentCrimesPerPop <- CrimeData_scaled$ViolentCrimesPerPop
 
 ```
 
 ```{r}
-fit <- lm(pca_scores$ViolentCrimesPerPop ~ ., data = pca_scores[, 1:25])
-summary(fit)
+fit_pca <- lm(pca_scores$ViolentCrimesPerPop ~ ., data = pca_scores[, 1:25])
+summary(fit_pca)
 
 ```
 
@@ -395,5 +395,5 @@ PC1:
 ### Checking Multicollinearity Now
 
 ```{r}
-vif(fit) %>% knitr::kable()
+vif(fit_pca) %>% knitr::kable()
 ```
