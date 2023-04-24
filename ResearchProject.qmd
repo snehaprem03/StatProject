@@ -365,6 +365,7 @@ summary(pca)
 
 ```{R}
 screeplot(pca, type="l", npcs=50)
+# Here we can see that the first 25 principal components explain ~90% of the variance
 ```
 
 ```{r}
@@ -388,7 +389,11 @@ summary(fit)
 
 ```
 
-### Checking Multicollinearity
+### Interpreting the PCA Coefficients
+
+PC1:
+
+### Checking Multicollinearity Now
 
 ```{r}
 vif(fit) %>% knitr::kable()
