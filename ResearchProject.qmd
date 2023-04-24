@@ -353,6 +353,7 @@ pca_loadings <- loadings(pca)
 
 pca_loadings_subset <- pca_loadings[, 1:12]
 pca_loadings_subset
+
 ```
 
 
@@ -365,37 +366,36 @@ PC1: The first principal component represents income inequality
 - Lowest Loadings: medIncome, pctWInvInc, medFamInc, RentLowQ, PctFam2Par
 
 
-PC2: The second principal component represents 
+PC2: The second principal component represents the amount of immigration/immigrants + Large Person Households
 
-- Highest Loadings:
+- Highest Loadings: racepctasian(0.16), racepcthispanic(0.16), MalePctNevMarr (0.11), PersPerFam(0.13), PctImmigration, PctNotSpeakEnglishWell
 
-- Lowest Loadings: 
+- Lowest Loadings: PctSpeakEnglOnly
 
 
+PC3: The third principal component represents household size (large household pulls down this PC)
 
-PC3:
+- Highest Loadings: population, numbUrban, whitepercap, numbUnderPov, NumIllegal
 
-- Highest Loadings:
+- Lowest Loadings: PctLargHouseFam, PctLargHouseOccup, PersPerOccupHous, PersPerOwnOccHous, PersPerRentOccHous, PersperFam
 
-- Lowest Loadings: 
+PC4: The fourth principal component represents older population levels (more social security, etc)
 
-PC4:
+- Highest Loadings: percent of population age 65 and up, percentage of households with social security income, percentage of households with retirement income, and percent not HS grad 
 
-- Highest Loadings:
+- Lowest Loadings: percentage of population that is 12-21 in age, percentage of population that is 12-29 in age, percentage of population that is 16-24 in age, percentage of households with wage or salary income
 
-- Lowest Loadings: 
+PC5: The fifth principal component is more associated with  higher population density, higher poverty levels and less associated with older populations and immigration patterns
 
-PC5:
+- Highest Loadings: population, mean people per household, number of people living in areas classified as urban, percentage of households with wage or salary income, number of people under the poverty level
 
-- Highest Loadings:
+- Lowest Loadings: percent of population age 65 and up, percent receiving social security wage, percent with less than 3 bedroom houses, percentage of immigrants who immigrated within last 5 years, percentage of immigrants who immigrated within last 8 years, and percentage of immigrants who immigrated within last 10 years
 
-- Lowest Loadings: 
+PC6: The sixth primcipal component is more associated with higher labor force participation and higher divorce rates and less associated with younger population, higher levels of education and professional employment
 
-PC6:
+- Highest Loadings: percentage of people 16 and over who are employed, percentage of males who are divorced, percentage of females who are divorced, percentage of population who are divorced, percentage of moms of kids 6 and under in labor force, percentage of moms of kids under 18 in labor force, median year housing units built
 
-- Highest Loadings:
-
-- Lowest Loadings: 
+- Lowest Loadings: percentage of population that is 12-21 in age, percentage of people 25 and over with a bachelors degree or higher education, percentage of people 16 and over who are employed in professional services, percentage of males who have never married, and percent of vacant housing that has been vacant more than 6 months
 
 
 PC7:
@@ -438,7 +438,7 @@ PC12:
 
 ```{r}
 #Summarize to find coefficients of each principal components
-fit <- lm(ViolentCrimesPerPop ~ ., data = pca_scores[, c(1:24, ncol(pca_scores))])
+fit <- lm(ViolentCrimesPerPop ~ ., data = pca_scores[, c(1:12, ncol(pca_scores))])
 summary(fit)
 
 ```
