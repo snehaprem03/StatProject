@@ -398,11 +398,11 @@ PC6: The sixth primcipal component is more associated with higher labor force pa
 - Lowest Loadings: percentage of population that is 12-21 in age, percentage of people 25 and over with a bachelors degree or higher education, percentage of people 16 and over who are employed in professional services, percentage of males who have never married, and percent of vacant housing that has been vacant more than 6 months
 
 
-PC7:
+PC7: The seventh principal component is more associated with those who are old and retired versus those who are younger with worse jobs and worse living conditions for children.
 
-- Highest Loadings:
+- Highest Loadings: Percentage of white people, number of vacant houses, percentage of those age 65 and up, percentage of households with farm or self employment, percentage of households with retirement income, and percent of kids in two parent households.
 
-- Lowest Loadings: 
+- Lowest Loadings: Percentage of african american, those 16 and over employed in manufacturing, and percentage of kids born to never married.
 
 PC8:
 
