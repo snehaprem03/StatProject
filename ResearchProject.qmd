@@ -327,7 +327,7 @@ summary(pca)
 ```
 
 ```{R}
-screeplot(pca, type="l", npcs=50)
+screeplot(pca, type="l", npcs=25)
 # Here we can see that the first 25 principal components explain ~90% of the variance
 ```
 ### Interpreting the PCA Coefficients
@@ -343,7 +343,7 @@ attributes(data.pca)
 
 ```{R}
 pca_loadings <- loadings(pca)
-pca_loadings_subset <- pca_loadings[, 1:24]
+pca_loadings_subset <- pca_loadings[, 1:12]
 pca_loadings_subset
 ```
 
