@@ -244,10 +244,14 @@ summary(full_model)$coefficient
 
 ```{r}
 # We can also fit models with interaction effects of variables we believe may be related
-interaction_model1 <- lm(ViolentCrimesPerPop ~ racepctwhite + PctFam2Par + racepctwhite:PctFam2Par, data = CrimeData)
-interaction_model2 <- lm(ViolentCrimesPerPop ~ racepcthisp + PctRecentImmig + racepcthisp:PctRecentImmig, data = CrimeData)
+interaction_model1 <- lm(ViolentCrimesPerPop ~ racepctwhite + medIncome + racepctwhite:medIncome, data = CrimeData)
+interaction_model2 <- lm(ViolentCrimesPerPop ~ racepcthisp + medIncome + racepcthisp:medIncome, data = CrimeData)
+interaction_model3 <- lm(ViolentCrimesPerPop ~ racepctblack + medIncome + racepctblack:medIncome, data = CrimeData)
+interaction_model4 <- lm(ViolentCrimesPerPop ~ racepctasian + medIncome + racepctasian:medIncome, data = CrimeData)
 summary(interaction_model1)
 summary(interaction_model2)
+summary(interaction_model3)
+summary(interaction_model4)
 ```
 
 # 4. Model Pre-Processing
@@ -295,12 +299,9 @@ Plot +
 
 ```
 
-
-
 ### 5.1 Addressing Multicollinearity
 
 #### Using PCA
-
 
 ```{r}
 #Obtain initial principal components using prcomp()
@@ -313,8 +314,8 @@ summary(pca)
 screeplot(pca, type="l", npcs=25)
 # Here we can see that the first 25 principal components explain ~90% of the variance
 ```
-### Interpreting the PCA Coefficients
 
+### Interpreting the PCA Coefficients
 
 ```{r}
 pca_scores <- as.data.frame(pca$x)
@@ -341,56 +342,49 @@ pca_loadings_subset
 
 ```
 
-
 ## Interpretations
 
 PC1: The first principal component represents income inequality
 
-- Highest Loadings: racepctblack (0.1067), pctWPubAsst (0.164013), PctPopUnderPov (0.173), PctLess9thGrade      (0.1452), PctNotHSGrad (0.1613), PctUnemployed
+-   Highest Loadings: racepctblack (0.1067), pctWPubAsst (0.164013), PctPopUnderPov (0.173), PctLess9thGrade (0.1452), PctNotHSGrad (0.1613), PctUnemployed
 
-- Lowest Loadings: medIncome, pctWInvInc, medFamInc, RentLowQ, PctFam2Par
-
+-   Lowest Loadings: medIncome, pctWInvInc, medFamInc, RentLowQ, PctFam2Par
 
 PC2: The second principal component represents the amount of immigration/immigrants + Large Person Households
 
-- Highest Loadings: racepctasian(0.16), racepcthispanic(0.16), MalePctNevMarr (0.11), PersPerFam(0.13), PctImmigration, PctNotSpeakEnglishWell
+-   Highest Loadings: racepctasian(0.16), racepcthispanic(0.16), MalePctNevMarr (0.11), PersPerFam(0.13), PctImmigration, PctNotSpeakEnglishWell
 
-- Lowest Loadings: PctSpeakEnglOnly
-
+-   Lowest Loadings: PctSpeakEnglOnly
 
 PC3: The third principal component represents household size (large household pulls down this PC)
 
-- Highest Loadings: population, numbUrban, whitepercap, numbUnderPov, NumIllegal
+-   Highest Loadings: population, numbUrban, whitepercap, numbUnderPov, NumIllegal
 
-- Lowest Loadings: PctLargHouseFam, PctLargHouseOccup, PersPerOccupHous, PersPerOwnOccHous, PersPerRentOccHous, PersperFam
+-   Lowest Loadings: PctLargHouseFam, PctLargHouseOccup, PersPerOccupHous, PersPerOwnOccHous, PersPerRentOccHous, PersperFam
 
 PC4: The fourth principal component represents older population levels (more social security, etc)
 
-- Highest Loadings: percent of population age 65 and up, percentage of households with social security income, percentage of households with retirement income, and percent not HS grad 
+-   Highest Loadings: percent of population age 65 and up, percentage of households with social security income, percentage of households with retirement income, and percent not HS grad
 
-- Lowest Loadings: percentage of population that is 12-21 in age, percentage of population that is 12-29 in age, percentage of population that is 16-24 in age, percentage of households with wage or salary income
+-   Lowest Loadings: percentage of population that is 12-21 in age, percentage of population that is 12-29 in age, percentage of population that is 16-24 in age, percentage of households with wage or salary income
 
-PC5: The fifth principal component is more associated with  higher population density, higher poverty levels and less associated with older populations and immigration patterns
+PC5: The fifth principal component is more associated with higher population density, higher poverty levels and less associated with older populations and immigration patterns
 
-- Highest Loadings: population, mean people per household, number of people living in areas classified as urban, percentage of households with wage or salary income, number of people under the poverty level
+-   Highest Loadings: population, mean people per household, number of people living in areas classified as urban, percentage of households with wage or salary income, number of people under the poverty level
 
-- Lowest Loadings: percent of population age 65 and up, percent receiving social security wage, percent with less than 3 bedroom houses, percentage of immigrants who immigrated within last 5 years, percentage of immigrants who immigrated within last 8 years, and percentage of immigrants who immigrated within last 10 years
+-   Lowest Loadings: percent of population age 65 and up, percent receiving social security wage, percent with less than 3 bedroom houses, percentage of immigrants who immigrated within last 5 years, percentage of immigrants who immigrated within last 8 years, and percentage of immigrants who immigrated within last 10 years
 
 PC6: The sixth primcipal component is more associated with higher labor force participation and higher divorce rates and less associated with younger population, higher levels of education and professional employment
 
-- Highest Loadings: percentage of people 16 and over who are employed, percentage of males who are divorced, percentage of females who are divorced, percentage of population who are divorced, percentage of moms of kids 6 and under in labor force, percentage of moms of kids under 18 in labor force, median year housing units built
+-   Highest Loadings: percentage of people 16 and over who are employed, percentage of males who are divorced, percentage of females who are divorced, percentage of population who are divorced, percentage of moms of kids 6 and under in labor force, percentage of moms of kids under 18 in labor force, median year housing units built
 
-- Lowest Loadings: percentage of population that is 12-21 in age, percentage of people 25 and over with a bachelors degree or higher education, percentage of people 16 and over who are employed in professional services, percentage of males who have never married, and percent of vacant housing that has been vacant more than 6 months
-
+-   Lowest Loadings: percentage of population that is 12-21 in age, percentage of people 25 and over with a bachelors degree or higher education, percentage of people 16 and over who are employed in professional services, percentage of males who have never married, and percent of vacant housing that has been vacant more than 6 months
 
 PC7: The seventh principal component is more associated with those who are old and retired versus those who are younger with worse jobs and worse living conditions for children.
 
-- Highest Loadings: Percentage of white people, number of vacant houses, percentage of those age 65 and up, percentage of households with farm or self employment, percentage of households with retirement income, and percent of kids in two parent households.
+-   Highest Loadings: Percentage of white people, number of vacant houses, percentage of those age 65 and up, percentage of households with farm or self employment, percentage of households with retirement income, and percent of kids in two parent households.
 
-- Lowest Loadings: Percentage of african american, those 16 and over employed in manufacturing, and percentage of kids born to never married.
-
-
-
+-   Lowest Loadings: Percentage of african american, those 16 and over employed in manufacturing, and percentage of kids born to never married.
 
 ```{r}
 #Summarize to find coefficients of each principal components
@@ -398,7 +392,6 @@ fit <- lm(ViolentCrimesPerPop ~ ., data = pca_scores[, c(1:12, ncol(pca_scores))
 summary(fit)
 
 ```
-
 
 ### Checking Multicollinearity
 
@@ -408,9 +401,6 @@ vif(fit) %>% knitr::kable()
 
 
 ```
-
-
-
 
 # Conclusion
 
