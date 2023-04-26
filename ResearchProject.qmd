@@ -7,32 +7,33 @@ editor: visual
 
 # Reading Libraries and Dataset
 
-```{r}
+```{R, message=FALSE, warning=FALSE, results='hide'}
 #loads packages
-library(dplyr)
-library(ggplot2)
-library(tidyverse)
-library(ggformula)
 packages <- c(
-    # Old packages
-   "tidyverse",
-    "ISLR2",
-    "dplyr",
-    "tidyr",
-    "readr",
-    "purrr",
-    "glmnet",
-    "caret",
-    "repr",
-    # NEW
-    "torch",
-    "mlbench",
+  "dplyr", 
+  "readr", 
+  "tidyr", 
+  "purrr", 
+  "broom",
+  "magrittr",
+  "corrplot",
+  "caret",
+  "rpart",
+  "rpart.plot",
+  "e1071",
+  "torch", 
+  "luz",
+  "mlbench",
     "Stat2Data",
     "ggformula",
     "mosaic",
     "car",
     "corrplot"
 )v
+
+# renv::install(packages)
+sapply(packages, require, character.only=T)
+
 
 CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data", header = TRUE, na.strings = "?")
 
@@ -98,9 +99,11 @@ CrimeData <- CrimeData[, !names(CrimeData) %in% cols_to_drop]
 ```
 
 ```{r}
-# Dropping the County and Community columns"
+# Dropping the County and Community columns and State and Fold". Also dropping rows where ViolentCrimesPerPop is 0 
 
-CrimeData <- CrimeData[, !(names(CrimeData) %in% c("country", "community"))]
+CrimeData <- CrimeData[, !(names(CrimeData) %in% c("country", "community", "state", "fold"))]
+CrimeData <- CrimeData[CrimeData$ViolentCrimesPerPop != 0, ]
+
 
 ```
 
@@ -130,9 +133,7 @@ print(my_summary, digits = 2)
 ### 2.1 Dealing with Variable Types
 
 ```{r}
-# Fold and State is an int, so let's change that to num to keep everything consistent
 
-CrimeData <- CrimeData %>% mutate(across(c("state", "fold"), as.numeric))
 
 # communityname is also a string. We do not want this in our model as well as communityname can serve as a proxy variable for race
 
@@ -179,7 +180,7 @@ corr_matrix2 <- cor(CrimeData[22:40], use = "pairwise.complete.obs")
 corr_matrix3 <- cor(CrimeData[41:55], use = "pairwise.complete.obs")
 corr_matrix4 <- cor(CrimeData[56:70], use = "pairwise.complete.obs")
 corr_matrix5 <- cor(CrimeData[71:87], use = "pairwise.complete.obs")
-corr_matrix6 <- cor(CrimeData[88:103], use = "pairwise.complete.obs")
+corr_matrix6 <- cor(CrimeData[88:101], use = "pairwise.complete.obs")
 
 
 # Plot the correlation matrix with color scale and significance levels
@@ -208,6 +209,40 @@ ggplot(CrimeData, aes(x = racepctblack, y = ViolentCrimesPerPop)) +
   ggtitle("Race and Violent Crime") +
   theme_bw() +
   scale_color_manual(name = "Race", values = c("Black" = "black", "White" = "grey", "Asian" = "red", "Hispanic" = "green"))
+
+# Graph for Black race
+ggplot(CrimeData, aes(x = racepctblack, y = ViolentCrimesPerPop)) +
+  geom_point(color = "black") +
+  xlab("Percentage of Black Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between Black Race and Violent Crimes") +
+  theme_bw()
+
+# Graph for White race
+ggplot(CrimeData, aes(x = racepctwhite, y = ViolentCrimesPerPop)) +
+  geom_point(color = "grey") +
+  xlab("Percentage of White Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between White Race and Violent Crimes") +
+  theme_bw()
+
+# Graph for Asian race
+ggplot(CrimeData, aes(x = racepctasian, y = ViolentCrimesPerPop)) +
+  geom_point(color = "red") +
+  xlab("Percentage of Asian Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between Asian Race and Violent Crimes") +
+  theme_bw()
+
+# Graph for Hispanic race
+ggplot(CrimeData, aes(x = racepcthisp, y = ViolentCrimesPerPop)) +
+  geom_point(color = "green") +
+  xlab("Percentage of Hispanic Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between Hispanic Race and Violent Crimes") +
+  theme_bw()
+
+
 ```
 
 ```{r}
@@ -222,9 +257,24 @@ cor(CrimeData$ViolentCrimesPerPop, CrimeData$racepctasian)
 ```{r}
 #This creates a quick graph comparing violent crimes and median income
 gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData) +
-    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome))
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome)) +
+  labs(x = "Median Income", y = "Violent Crimes", title = "Graphing Median Income vs Violent Crimes per 100k") +
+  theme_bw()
 
+#This creates a quick graph comparing violent crimes and Non-HS Graduates
+gf_point(ViolentCrimesPerPop ~ PctEmploy, data = CrimeData) +
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome)) +
+labs(x = "Percentage Non-Highschool Graduate", y = "Violent Crimes", title = "Graphing Percent Non-HS Graduates vs Violent Crimes per 100k") +
+  theme_bw()
+
+#This creates a quick graph comparing violent crimes and if the area is urban
+gf_point(ViolentCrimesPerPop ~ PctEmploy, data = CrimeData) +
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome)) +
+labs(x = "Percentage Employed", y = "Violent Crimes", title = "Graphing Percent Employed vs Violent Crimes per 100k") +
+  theme_bw()
 ```
+
+
 
 ```{r}
 #Initial Multiple Regression Results before Feature Selection
@@ -239,10 +289,14 @@ summary(full_model)$coefficient
 
 ```{r}
 # We can also fit models with interaction effects of variables we believe may be related
-interaction_model1 <- lm(ViolentCrimesPerPop ~ racepctwhite + PctFam2Par + racepctwhite:PctFam2Par, data = CrimeData)
-interaction_model2 <- lm(ViolentCrimesPerPop ~ racepcthisp + PctRecentImmig + racepcthisp:PctRecentImmig, data = CrimeData)
+interaction_model1 <- lm(ViolentCrimesPerPop ~ racepctwhite + medIncome + racepctwhite:medIncome, data = CrimeData)
+interaction_model2 <- lm(ViolentCrimesPerPop ~ racepcthisp + medIncome + racepcthisp:medIncome, data = CrimeData)
+interaction_model3 <- lm(ViolentCrimesPerPop ~ racepctblack + medIncome + racepctblack:medIncome, data = CrimeData)
+interaction_model4 <- lm(ViolentCrimesPerPop ~ racepctasian + medIncome + racepctasian:medIncome, data = CrimeData)
 summary(interaction_model1)
 summary(interaction_model2)
+summary(interaction_model3)
+summary(interaction_model4)
 ```
 
 # 4. Model Pre-Processing
@@ -257,18 +311,6 @@ Here we are testing for multicollinearity in our data. Any data that has a value
 library(car)
 
 vif(full_model) %>% knitr::kable()
-```
-
-### 4.2 Addressing the Skewness of the Data
-
-We can see that many of our variables are skewed to various degrees. We want to address this before building our regression model
-
-```{r}
-# Addressing the Skewness of the Data - Normalization
-
-
-
-
 ```
 
 ### 4.2 Further Visualizations
@@ -302,52 +344,111 @@ Plot +
 
 ```
 
-# Model Building
+### 5.1 Addressing Multicollinearity
 
-### 5.1 Building a Model Including the Race Predictors
-
-### 5.2 Eliminating the Race Variables
+#### Using PCA
 
 ```{r}
-# Using Lasso as a Feature Selection Technique
+#Obtain initial principal components using prcomp()
+pca <- prcomp(CrimeData %>% select(-ViolentCrimesPerPop), center = TRUE, scale. = TRUE, retx = TRUE)
 
-# set.seed(123)
-# train_index <- sample(nrow(CrimeData), 0.7 * nrow(CrimeData))
-# train_data <- crime_data[train_index, ]
-# test_data <- crime_data[-train_index, ]
-# 
-# # Convert the data to matrix format
-# x_train <- as.matrix(train_data[, -ncol(train_data)])
-# y_train <- train_data[, ncol(train_data)]
-# 
-# # Fit a Lasso regression model using cross-validation to select the lambda value
-# lasso_model <- cv.glmnet(x_train, y_train, alpha = 1, standardize = TRUE, nfolds = 10)
-# 
-# # Plot the Lasso coefficients
-# plot(lasso_model)
-# 
-# # Identify the optimal lambda value
-# opt_lambda <- lasso_model$lambda.min
-
-
-
-# 
-# # Use the optimal lambda value to fit the final Lasso model
-# lasso_final_model <- glmnet(x_train, y_train, alpha = 1, standardize = TRUE, lambda = opt_lambda)
-# 
-# # Extract the coefficients from the final model
-# lasso_coef <- coef(lasso_final_model)
-# 
-# # Remove the intercept term
-# lasso_coef <- lasso_coef[-1,]
-# 
-# # Identify the non-zero coefficients
-# non_zero_coef <- which(lasso_coef != 0)
-# 
-# # Select the relevant variables from the dataset
-# relevant_vars <- train_data[, c(non_zero_coef, ncol(train_data))]
+summary(pca)
 ```
 
-## What are your expected outcomes for the project?
+```{R}
+screeplot(pca, type="l", npcs=25)
+# Here we can see that the first 25 principal components explain ~90% of the variance
+```
 
-Initially, we would want to be able to find the predictors from our dataset that impact the likelihood of violent crimes occurring, which will allow us to have a better understanding of the data, which will give us a stronger model when making predictions regarding violent crimes occurring. Other factors that may influence this can be variables such as race, gender, police force per area, income, etc. From all this, we would have a regression model built on feature selection and encoding algorithms (the number of violent crimes that occur).
+### Interpreting the PCA Coefficients
+
+```{r}
+pca_scores <- as.data.frame(pca$x)
+pca_scores
+```
+
+```{R}
+#Create screeplot to observe trend in principal component variances
+pca <- princomp(CrimeData %>% select(-ViolentCrimesPerPop), cor=TRUE)
+screeplot(pca)
+```
+
+```{r}
+pca_scores$ViolentCrimesPerPop <- CrimeData$ViolentCrimesPerPop
+
+```
+
+```{R}
+# We decided to use the first 7 PC's which explain about 72% of the total variance
+pca_loadings <- loadings(pca)
+
+pca_loadings_subset <- pca_loadings[, 1:7]
+pca_loadings_subset
+
+```
+
+## Interpretations
+
+PC1: The first principal component represents income inequality
+
+-   Highest Loadings: racepctblack (0.1067), pctWPubAsst (0.164013), PctPopUnderPov (0.173), PctLess9thGrade (0.1452), PctNotHSGrad (0.1613), PctUnemployed
+
+-   Lowest Loadings: medIncome, pctWInvInc, medFamInc, RentLowQ, PctFam2Par
+
+PC2: The second principal component represents the amount of immigration/immigrants + Large Person Households
+
+-   Highest Loadings: racepctasian(0.16), racepcthispanic(0.16), MalePctNevMarr (0.11), PersPerFam(0.13), PctImmigration, PctNotSpeakEnglishWell
+
+-   Lowest Loadings: PctSpeakEnglOnly
+
+PC3: The third principal component represents household size (large household pulls down this PC)
+
+-   Highest Loadings: population, numbUrban, whitepercap, numbUnderPov, NumIllegal
+
+-   Lowest Loadings: PctLargHouseFam, PctLargHouseOccup, PersPerOccupHous, PersPerOwnOccHous, PersPerRentOccHous, PersperFam
+
+PC4: The fourth principal component represents older population levels (more social security, etc)
+
+-   Highest Loadings: percent of population age 65 and up, percentage of households with social security income, percentage of households with retirement income, and percent not HS grad
+
+-   Lowest Loadings: percentage of population that is 12-21 in age, percentage of population that is 12-29 in age, percentage of population that is 16-24 in age, percentage of households with wage or salary income
+
+PC5: The fifth principal component is more associated with higher population density, higher poverty levels and less associated with older populations and immigration patterns
+
+-   Highest Loadings: population, mean people per household, number of people living in areas classified as urban, percentage of households with wage or salary income, number of people under the poverty level
+
+-   Lowest Loadings: percent of population age 65 and up, percent receiving social security wage, percent with less than 3 bedroom houses, percentage of immigrants who immigrated within last 5 years, percentage of immigrants who immigrated within last 8 years, and percentage of immigrants who immigrated within last 10 years
+
+PC6: The sixth primcipal component is more associated with higher labor force participation and higher divorce rates and less associated with younger population, higher levels of education and professional employment
+
+-   Highest Loadings: percentage of people 16 and over who are employed, percentage of males who are divorced, percentage of females who are divorced, percentage of population who are divorced, percentage of moms of kids 6 and under in labor force, percentage of moms of kids under 18 in labor force, median year housing units built
+
+-   Lowest Loadings: percentage of population that is 12-21 in age, percentage of people 25 and over with a bachelors degree or higher education, percentage of people 16 and over who are employed in professional services, percentage of males who have never married, and percent of vacant housing that has been vacant more than 6 months
+
+PC7: The seventh principal component is more associated with those who are old and retired versus those who are younger with worse jobs and worse living conditions for children.
+
+-   Highest Loadings: Percentage of white people, number of vacant houses, percentage of those age 65 and up, percentage of households with farm or self employment, percentage of households with retirement income, and percent of kids in two parent households.
+
+-   Lowest Loadings: Percentage of african american, those 16 and over employed in manufacturing, and percentage of kids born to never married.
+
+
+
+```{r}
+#Summarize to find coefficients of each principal components
+fit <- lm(log(ViolentCrimesPerPop) ~ ., data = pca_scores[, c(1:7, ncol(pca_scores))])
+summary(fit)
+
+```
+
+### Checking Multicollinearity
+
+```{r}
+#Multicollinearity analysis
+vif(fit) %>% knitr::kable()
+
+
+```
+
+# Conclusion
+
+Conclusion....
