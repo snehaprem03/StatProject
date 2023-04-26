@@ -32,7 +32,7 @@ packages <- c(
     "mosaic",
     "car",
     "corrplot"
-)
+)v
 
 CrimeData <- read.csv("https://raw.githubusercontent.com/snehaprem03/StatProject/main/communities.data", header = TRUE, na.strings = "?")
 
