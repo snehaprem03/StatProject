@@ -171,26 +171,27 @@ for (i in 1:10) {
 ### 2.3 Initial Correlation Map
 
 ```{r}
-# Initial Correlation Maps to Visualize Initial Relationships. Needed to create multiple to fit all the variables
 
+# Compute the correlation matrix for crime-related variables
+crime_vars <- c("ViolentCrimesPerPop", "PctKids2Par", "PctFam2Par", "PctPersDenseHous", "PctHousLess3BR", "PctHousOccup", "HousVacant", "PctVacantBoarded")
+corr_matrix_crime <- cor(CrimeData[, crime_vars], use = "pairwise.complete.obs")
+
+# Compute the correlation matrix for demographic variables
+demo_vars <- c("ViolentCrimesPerPop", "racepctblack", "racepctwhite", "racepctasian", "racepcthisp", "pctUrban", "medIncome")
+corr_matrix_demo <- cor(CrimeData[, demo_vars], use = "pairwise.complete.obs")
+
+# Compute the correlation matrix for socioeconomic variables
+soc_vars <- c("ViolentCrimesPerPop", "NumUnderPov", "PctUnemployed", "PctNotHSGrad", "PctEmplManu", "PctEmplProfServ", "PctOccupManu", "PctOccupMgmtProf")
+corr_matrix_soc <- cor(CrimeData[, soc_vars], use = "pairwise.complete.obs")
+
+# Plot the correlation matrices
 library(corrplot)
-# Compute the correlation matrix
-corr_matrix1 <- cor(CrimeData[3:21], use = "pairwise.complete.obs")
-corr_matrix2 <- cor(CrimeData[22:40], use = "pairwise.complete.obs")
-corr_matrix3 <- cor(CrimeData[41:55], use = "pairwise.complete.obs")
-corr_matrix4 <- cor(CrimeData[56:70], use = "pairwise.complete.obs")
-corr_matrix5 <- cor(CrimeData[71:87], use = "pairwise.complete.obs")
-corr_matrix6 <- cor(CrimeData[88:101], use = "pairwise.complete.obs")
 
+par(mar = c(1, 1, 2, 1))  # Adjust the margins (bottom, left, top, right)
 
-# Plot the correlation matrix with color scale and significance levels
-corrplot(corr_matrix1, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
-corrplot(corr_matrix2, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
-corrplot(corr_matrix3, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
-corrplot(corr_matrix4, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
-corrplot(corr_matrix5, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
-corrplot(corr_matrix6, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank")
-
+corrplot(corr_matrix_crime, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank", title = "Crime-related Variables", tl.cex = 0.7, mar = c(0, 0, 3, 0))
+corrplot(corr_matrix_demo, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank", title = "Demographic Variables", tl.cex = 0.7, mar = c(0, 0, 3, 0))
+corrplot(corr_matrix_soc, method = "color", type = "upper", order = "hclust", sig.level = 0.05, insig = "blank", title = "Socioeconomic Variables", tl.cex = 0.7,  mar = c(0, 0, 3, 0))
 ```
 
 # 3. Introductory Plots and Further EDA
