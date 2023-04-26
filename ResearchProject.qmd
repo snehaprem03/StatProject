@@ -209,6 +209,40 @@ ggplot(CrimeData, aes(x = racepctblack, y = ViolentCrimesPerPop)) +
   ggtitle("Race and Violent Crime") +
   theme_bw() +
   scale_color_manual(name = "Race", values = c("Black" = "black", "White" = "grey", "Asian" = "red", "Hispanic" = "green"))
+
+# Graph for Black race
+ggplot(CrimeData, aes(x = racepctblack, y = ViolentCrimesPerPop)) +
+  geom_point(color = "black") +
+  xlab("Percentage of Black Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between Black Race and Violent Crimes") +
+  theme_bw()
+
+# Graph for White race
+ggplot(CrimeData, aes(x = racepctwhite, y = ViolentCrimesPerPop)) +
+  geom_point(color = "grey") +
+  xlab("Percentage of White Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between White Race and Violent Crimes") +
+  theme_bw()
+
+# Graph for Asian race
+ggplot(CrimeData, aes(x = racepctasian, y = ViolentCrimesPerPop)) +
+  geom_point(color = "red") +
+  xlab("Percentage of Asian Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between Asian Race and Violent Crimes") +
+  theme_bw()
+
+# Graph for Hispanic race
+ggplot(CrimeData, aes(x = racepcthisp, y = ViolentCrimesPerPop)) +
+  geom_point(color = "green") +
+  xlab("Percentage of Hispanic Population") +
+  ylab("Violent Crimes per Population") +
+  ggtitle("Relationship between Hispanic Race and Violent Crimes") +
+  theme_bw()
+
+
 ```
 
 ```{r}
@@ -223,8 +257,21 @@ cor(CrimeData$ViolentCrimesPerPop, CrimeData$racepctasian)
 ```{r}
 #This creates a quick graph comparing violent crimes and median income
 gf_point(ViolentCrimesPerPop ~ medIncome, data = CrimeData) +
-    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome))
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome)) +
+  labs(x = "Median Income", y = "Violent Crimes", title = "Graphing Median Income vs Violent Crimes per 100k") +
+  theme_bw()
 
+#This creates a quick graph comparing violent crimes and Non-HS Graduates
+gf_point(ViolentCrimesPerPop ~ PctEmploy, data = CrimeData) +
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome)) +
+labs(x = "Percentage Non-Highschool Graduate", y = "Violent Crimes", title = "Graphing Percent Non-HS Graduates vs Violent Crimes per 100k") +
+  theme_bw()
+
+#This creates a quick graph comparing violent crimes and if the area is urban
+gf_point(ViolentCrimesPerPop ~ PctEmploy, data = CrimeData) +
+    geom_smooth(aes(x = ViolentCrimesPerPop, y = medIncome)) +
+labs(x = "Percentage Employed", y = "Violent Crimes", title = "Graphing Percent Employed vs Violent Crimes per 100k") +
+  theme_bw()
 ```
 
 ```{r}
